@@ -1,20 +1,20 @@
-BitZeny Core integration/staging tree
+Okane Core integration/staging tree
 =====================================
 
-http://bitzeny.org
+https://okane.dokodeglobal.com/
 
-* Copyright (c) 2014      BitZeny Core Developers
-* Copyright (c) 2009-2014 Bitcoin Core Developers
-* Copyright (c) 2013-2014 DarkCoin Developers (DarkGravityWave3)
-* Copyright (c) 2014      Alexander Peslyak   (Yescrypt)
+* Copyright (c) 2017-     Okane Core Developers
+* Copyright (c) 2009-2017 Bitcoin Core Developers
+* Copyright (c) 2013-2017 Dash Developers (DarkGravityWave3)
+* Copyright (c) 2014-2017 Alexander Peslyak (Yescrypt Original)
 
 License
 -------
 
-BitZeny Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+Okane Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see http://opensource.org/licenses/MIT.
 
-Build bitzenyd on Ubuntu 14.04
+Build okaned on Ubuntu 16.04
 -------------------
 
     sudo apt-get install build-essential
@@ -27,10 +27,10 @@ Build bitzenyd on Ubuntu 14.04
     sudo apt-get install libdb4.8-dev
     sudo apt-get install libdb4.8++-dev
     
-    git clone https://github.com/bitzeny/bitzeny.git
-    cd bitzeny
+    git clone https://github.com/okane-team/okane.git
+    cd okane
     ./autogen.sh
-    ./configure --without-miniupnpc --without-gui --disable-tests
+    ./configure --enable-upnp-default --without-gui --disable-tests
     make
 
 Development tips and tricks

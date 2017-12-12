@@ -1,7 +1,7 @@
-Bitcoin 0.9.3 BETA
+Bitcoin BETA Readme
 =====================
 
-Copyright (c) 2009-2014 Bitcoin Developers
+Copyright (c) 2009-2017 Bitcoin Developers
 
 
 Setup
@@ -14,7 +14,7 @@ The following are some helpful notes on how to run Bitcoin on your native platfo
 
 ### Unix
 
-You need the Qt4 run-time libraries to run Bitcoin-Qt. On Debian or Ubuntu:
+You need the Qt4 or Qt5 run-time libraries to run Bitcoin-Qt. On Debian or Ubuntu(Qt4):
 
 	sudo apt-get install libqtgui4
 
