@@ -106,22 +106,22 @@ Release Process
 
  Build bitcoind and bitcoin-qt on Linux32, Linux64, and Win32:
   
-	./bin/gbuild --commit bitzeny=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-linux.yml
-	#./bin/gsign --signer $SIGNER --release ${VERSION} --destination ../gitian.sigs/ ../bitzeny/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gbuild --commit okane=z${VERSION} ../okane/contrib/gitian-descriptors/gitian-linux.yml
+	#./bin/gsign --signer $SIGNER --release ${VERSION} --destination ../gitian.sigs/ ../okane/contrib/gitian-descriptors/gitian-linux.yml
 	pushd build/out
-	zip -r bitzeny-${VERSION}-linux-gitian.zip *
-	mv bitzeny-${VERSION}-linux-gitian.zip ../../../
+	zip -r okane-${VERSION}-linux-gitian.zip *
+	mv okane-${VERSION}-linux-gitian.zip ../../../
 	popd
-	./bin/gbuild --commit bitzeny=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-win.yml
-	#./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../bitzeny/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gbuild --commit okane=z${VERSION} ../okane/contrib/gitian-descriptors/gitian-win.yml
+	#./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../okane/contrib/gitian-descriptors/gitian-win.yml
 	pushd build/out
-	zip -r bitzeny-${VERSION}-win-gitian.zip *
-	mv bitzeny-${VERSION}-win-gitian.zip ../../../
+	zip -r okane-${VERSION}-win-gitian.zip *
+	mv okane-${VERSION}-win-gitian.zip ../../../
 	popd
-	./bin/gbuild --commit bitzeny=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
-	#./bin/gsign --signer $SIGNER --release ${VERSION}-osx --destination ../gitian.sigs/ ../bitzeny/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
+	./bin/gbuild --commit okane=z${VERSION} ../okane/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
+	#./bin/gsign --signer $SIGNER --release ${VERSION}-osx --destination ../gitian.sigs/ ../okane/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
 	pushd build/out
-	mv BitZeny-Qt.dmg ../../../
+	mv Okane-Qt.dmg ../../../
 	popd
 	popd
 

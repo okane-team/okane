@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2013 The Bitcoin developers
+// Copyright (c) 2009-2017 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -86,13 +86,13 @@ bool AppInit(int argc, char* argv[])
         if (mapArgs.count("-?") || mapArgs.count("--help"))
         {
             // First part of help message is specific to bitcoind / RPC client
-            std::string strUsage = _("BitZeny Core Daemon") + " " + _("version") + " " + FormatFullVersion() + "\n\n" +
+            std::string strUsage = _("Okane Core Daemon") + " " + _("version") + " " + FormatFullVersion() + "\n\n" +
                 _("Usage:") + "\n" +
-                  "  bitzenyd [options]                     " + _("Start BitZeny Core Daemon") + "\n" +
-                _("Usage (deprecated, use bitzeny-cli):") + "\n" +
-                  "  bitzenyd [options] <command> [params]  " + _("Send command to BitZeny Core") + "\n" +
-                  "  bitzenyd [options] help                " + _("List commands") + "\n" +
-                  "  bitzenyd [options] help <command>      " + _("Get help for a command") + "\n";
+                  "  okaned [options]                     " + _("Start Okane Core Daemon") + "\n" +
+                _("Usage (deprecated, use okane-cli):") + "\n" +
+                  "  okaned [options] <command> [params]  " + _("Send command to Okane Core") + "\n" +
+                  "  okaned [options] help                " + _("List commands") + "\n" +
+                  "  okaned [options] help <command>      " + _("Get help for a command") + "\n";
 
             strUsage += "\n" + HelpMessage(HMM_BITCOIND);
             strUsage += "\n" + HelpMessageCli(false);
@@ -104,7 +104,7 @@ bool AppInit(int argc, char* argv[])
         // Command-line RPC
         bool fCommandLine = false;
         for (int i = 1; i < argc; i++)
-            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "bitzeny:"))
+            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "okane:"))
                 fCommandLine = true;
 
         if (fCommandLine)
@@ -116,7 +116,7 @@ bool AppInit(int argc, char* argv[])
         fDaemon = GetBoolArg("-daemon", false);
         if (fDaemon)
         {
-            fprintf(stdout, "BitZeny server starting\n");
+            fprintf(stdout, "Okane server starting\n");
 
             // Daemonize
             pid_t pid = fork();

@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2013-2014 DarkCoin Developers
+// Copyright (c) 2009-2017 The Bitcoin developers
+// Copyright (c) 2013-2017 Dash Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -28,7 +28,7 @@ using namespace std;
 using namespace boost;
 
 #if defined(NDEBUG)
-# error "BitZeny cannot be compiled without assertions."
+# error "Okane cannot be compiled without assertions."
 #endif
 
 //
@@ -74,7 +74,7 @@ void EraseOrphansFor(NodeId peer);
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "BitZeny Signed Message:\n";
+const string strMessageMagic = "Okane Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -1212,7 +1212,7 @@ void static PruneOrphanBlocks()
 
 int64_t GetBlockValue(int nHeight, int64_t nFees)
 {
-    int64_t nSubsidy = 250 * COIN;
+    int64_t nSubsidy = 50 * COIN;
     int halvings = nHeight / Params().SubsidyHalvingInterval();
 
     // Force block reward to zero when right shift is undefined.
@@ -1235,14 +1235,14 @@ unsigned int ComputeMinWork(unsigned int nBase, int64_t nTime)
     return bnLimit.GetCompact();
 }
 
-// DarkGravityWave3
+// DarkGravityWave3/2
 // - every block retarget
-// - 24 blocks average
+// - 12 blocks average
 // - 300% up and 300% down
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
 {
-    const int64_t nAverageBlocks = 24;
-    const int64_t nTargetSpacing = 90;
+    const int64_t nAverageBlocks = 12;
+    const int64_t nTargetSpacing = 120;
     const int64_t nTargetTimespan = nAverageBlocks * nTargetSpacing;
 
     if (pindexLast == NULL || pindexLast->nHeight <= nAverageBlocks)
@@ -1287,13 +1287,13 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits)
     CBigNum bnTarget;
     bnTarget.SetCompact(nBits);
 
-    // Check range
+    // Check range: error>nBits below minimum work
     if (bnTarget <= 0 || bnTarget > Params().ProofOfWorkLimit())
-        return error("CheckProofOfWork() : nBits below minimum work");
+        return false;
 
-    // Check proof of work matches claimed amount
+    // Check proof of work matches claimed amount: error>hash doesn't match nBits
     if (hash > bnTarget.getuint256())
-        return error("CheckProofOfWork() : hash doesn't match nBits");
+        return false;
 
     return true;
 }
@@ -1333,18 +1333,13 @@ void CheckForkWarningConditions()
 
     if (pindexBestForkTip || (pindexBestInvalid && pindexBestInvalid->nChainWork > chainActive.Tip()->nChainWork + (chainActive.Tip()->GetBlockWork() * 6).getuint256()))
     {
-        if (!fLargeWorkForkFound)
+        if (!fLargeWorkForkFound && pindexBestForkBase)
         {
-            std::string strCmd = GetArg("-alertnotify", "");
-            if (!strCmd.empty())
-            {
-                std::string warning = std::string("'Warning: Large-work fork detected, forking after block ") +
-                                      pindexBestForkBase->phashBlock->ToString() + std::string("'");
-                boost::replace_all(strCmd, "%s", warning);
-                boost::thread t(runCommand, strCmd); // thread runs free
-            }
+            std::string warning = std::string("'Warning: Large-work fork detected, forking after block ") +
+                pindexBestForkBase->phashBlock->ToString() + std::string("'");
+            CAlert::Notify(warning, true);
         }
-        if (pindexBestForkTip)
+        if (pindexBestForkTip && pindexBestForkBase)
         {
             LogPrintf("CheckForkWarningConditions: Warning: Large valid fork found\n  forking the chain at height %d (%s)\n  lasting to height %d (%s).\nChain state database corruption likely.\n",
                    pindexBestForkBase->nHeight, pindexBestForkBase->phashBlock->ToString(),
@@ -1711,7 +1706,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("bitzeny-scriptch");
+    RenameThread("okane-scriptch");
     scriptcheckqueue.Thread();
 }
 

@@ -13,11 +13,11 @@ endif
 bin_PROGRAMS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += bitzenyd
+  bin_PROGRAMS += okaned
 endif
 
 if BUILD_BITCOIN_CLI
-  bin_PROGRAMS += bitzeny-cli
+  bin_PROGRAMS += okane-cli
 endif
 
 SUBDIRS = . $(BUILD_QT) $(BUILD_TEST)
@@ -95,7 +95,6 @@ libbitcoin_server_a_SOURCES = \
   coins.cpp \
   init.cpp \
   keystore.cpp \
-  leveldbwrapper.cpp \
   main.cpp \
   miner.cpp \
   net.cpp \
@@ -106,7 +105,6 @@ libbitcoin_server_a_SOURCES = \
   rpcnet.cpp \
   rpcrawtransaction.cpp \
   rpcserver.cpp \
-  txdb.cpp \
   txmempool.cpp \
   $(JSON_H) \
   $(BITCOIN_CORE_H)
@@ -158,35 +156,37 @@ nodist_libbitcoin_common_a_SOURCES = $(top_srcdir)/src/obj/build.h
 #
 
 # bitcoind binary #
-bitzenyd_LDADD = \
+okaned_LDADD = \
   libbitcoin_server.a \
   libbitcoin_cli.a \
   libbitcoin_common.a \
   $(LIBLEVELDB) \
   $(LIBMEMENV)
 if ENABLE_WALLET
-bitzenyd_LDADD += libbitcoin_wallet.a
+okaned_LDADD += libbitcoin_wallet.a
 endif
-bitzenyd_SOURCES = bitcoind.cpp
+okaned_SOURCES = bitcoind.cpp
 #
 
 if TARGET_WINDOWS
-bitzenyd_SOURCES += bitcoind-res.rc
+okaned_SOURCES += bitcoind-res.rc
 endif
 
 AM_CPPFLAGS += $(BDB_CPPFLAGS)
-bitzenyd_LDADD += $(BOOST_LIBS) $(BDB_LIBS)
+okaned_LDADD += $(BOOST_LIBS) $(BDB_LIBS)
 
 # bitcoin-cli binary #
-bitzeny_cli_LDADD = \
+okane_cli_LDADD = \
   libbitcoin_cli.a \
   libbitcoin_common.a \
+  $(LIBLEVELDB) \
+  $(LIBMEMENV) \
   $(BOOST_LIBS)
-bitzeny_cli_SOURCES = bitcoin-cli.cpp
+okane_cli_SOURCES = bitcoin-cli.cpp
 #
 
 if TARGET_WINDOWS
-bitzeny_cli_SOURCES += bitcoin-cli-res.rc
+okane_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
 # NOTE: This dependency is not strictly necessary, but without it make may try to build both in parallel, which breaks the LevelDB build system in a race
@@ -212,7 +212,7 @@ clean-local:
 	rm -f leveldb/*/*.gcno leveldb/helpers/memenv/*.gcno
 
 if TARGET_DARWIN
-hash/yescrypt-0.5/yescrypt.o: CFLAGS += -O3 -msse4.1 -funroll-loops -fomit-frame-pointer
+hash/yescrypt/yescrypt.o: CFLAGS += -O3 -msse4.1 -funroll-loops -fomit-frame-pointer
 else
-hash/yescrypt-0.5/yescrypt.o: CFLAGS += -msse4.1 -fPIC
+hash/yescrypt/yescrypt.o: CFLAGS += -msse4.1 -fPIC
 endif
