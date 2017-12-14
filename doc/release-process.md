@@ -2,7 +2,7 @@ Release Process
 ====================
 
 * update translations (ping wumpus, Diapolo or tcatm on IRC)
-* see https://github.com/BitzenyCoreDevelopers/bitzeny/blob/z1.2.x/doc/translation_process.md#syncing-with-transifex
+* see https://github.com/BitzenyCoreDevelopers/okane/blob/z1.2.x/doc/translation_process.md#syncing-with-transifex
 
 * * *
 
@@ -25,11 +25,11 @@ Release Process
 
 ##perform gitian builds
 
- From a directory containing the bitzeny source, gitian-builder and gitian.sigs
+ From a directory containing the okane source, gitian-builder and gitian.sigs
 
 	export SIGNER=(your github username)
 	export VERSION=(new version, e.g. 1.2.0)
-	pushd ./bitzeny
+	pushd ./okane
 	git checkout z${VERSION}
 	popd
 	pushd ./gitian-builder
@@ -76,25 +76,25 @@ Release Process
 	wget 'https://raw.githubusercontent.com/theuni/osx-cross-depends/master/patches/cdrtools/genisoimage.diff' -O \
 	     cdrkit-deterministic.patch
 	cd ..
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/boost-linux.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/boost-linux.yml
 	mv build/out/boost-*.zip inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/deps-linux.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/deps-linux.yml
 	mv build/out/bitcoin-deps-*.zip inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/qt-linux.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/qt-linux.yml
 	mv build/out/qt-*.tar.gz inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/boost-win.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/boost-win.yml
 	mv build/out/boost-*.zip inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/deps-win.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/deps-win.yml
 	mv build/out/bitcoin-deps-*.zip inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/qt-win.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/qt-win.yml
 	mv build/out/qt-*.zip inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/protobuf-win.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/protobuf-win.yml
 	mv build/out/protobuf-*.zip inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/gitian-osx-native.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/gitian-osx-native.yml
 	mv build/out/osx-*.tar.gz inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/gitian-osx-depends.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/gitian-osx-depends.yml
 	mv build/out/osx-*.tar.gz inputs/
-	./bin/gbuild ../bitzeny/contrib/gitian-descriptors/gitian-osx-qt.yml
+	./bin/gbuild ../okane/contrib/gitian-descriptors/gitian-osx-qt.yml
 	mv build/out/osx-*.tar.gz inputs/
 
  The expected SHA256 hashes of the intermediate inputs are:
@@ -114,52 +114,52 @@ Release Process
 	e2e403e1a08869c7eed4d4293bce13d51ec6a63592918b90ae215a0eceb44cb4  protobuf-win32-2.5.0-gitian-r4.zip
 	a0999037e8b0ef9ade13efd88fee261ba401f5ca910068b7e0cd3262ba667db0  protobuf-win64-2.5.0-gitian-r4.zip
 
- Build bitzenyd and bitzeny-qt on Linux32, Linux64, and Win32:
+ Build okaned and bitzeny-qt on Linux32, Linux64, and Win32:
 
-	./bin/gbuild --commit bitzeny=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../bitzeny/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gbuild --commit okane=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../okane/contrib/gitian-descriptors/gitian-linux.yml
 	pushd build/out
-	zip -r bitzeny-${VERSION}-linux-gitian.zip *
-	mv bitzeny-${VERSION}-linux-gitian.zip ../../../
+	zip -r okane-${VERSION}-linux-gitian.zip *
+	mv okane-${VERSION}-linux-gitian.zip ../../../
 	popd
-	./bin/gbuild --commit bitzeny=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../bitzeny/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gbuild --commit okane=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../okane/contrib/gitian-descriptors/gitian-win.yml
 	pushd build/out
-	zip -r bitzeny-${VERSION}-win-gitian.zip *
-	mv bitzeny-${VERSION}-win-gitian.zip ../../../
+	zip -r okane-${VERSION}-win-gitian.zip *
+	mv okane-${VERSION}-win-gitian.zip ../../../
 	popd
-	./bin/gbuild --commit bitzeny=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx --destination ../gitian.sigs/ ../bitzeny/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
+	./bin/gbuild --commit okane=z${VERSION} ../bitzeny/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx --destination ../gitian.sigs/ ../okane/contrib/gitian-descriptors/gitian-osx-bitcoin.yml
 	pushd build/out
-	mv BitZeny-Qt.dmg ../../../
+	mv Okane-Qt.dmg ../../../
 	popd
 	popd
 
   Build output expected:
 
-  1. linux 32-bit and 64-bit binaries + source (bitzeny-${VERSION}-linux-gitian.zip)
-  2. windows 32-bit and 64-bit binaries + installer + source (bitzeny-${VERSION}-win-gitian.zip)
-  3. OSX installer (BitZeny-Qt.dmg)
+  1. linux 32-bit and 64-bit binaries + source (okane-${VERSION}-linux-gitian.zip)
+  2. windows 32-bit and 64-bit binaries + installer + source (okane-${VERSION}-win-gitian.zip)
+  3. OSX installer (Okane-Qt.dmg)
   4. Gitian signatures (in gitian.sigs/${VERSION}[-win|-osx]/(your gitian key)/
 
 repackage gitian builds for release as stand-alone zip/tar/installer exe
 
 **Linux .tar.gz:**
 
-	unzip bitzeny-${VERSION}-linux-gitian.zip -d bitzeny-${VERSION}-linux
-	tar czvf bitzeny-${VERSION}-linux.tar.gz bitzeny-${VERSION}-linux
-	rm -rf bitzeny-${VERSION}-linux
+	unzip okane-${VERSION}-linux-gitian.zip -d bitzeny-${VERSION}-linux
+	tar czvf okane-${VERSION}-linux.tar.gz bitzeny-${VERSION}-linux
+	rm -rf okane-${VERSION}-linux
 
 **Windows .zip and setup.exe:**
 
-	unzip bitzeny-${VERSION}-win-gitian.zip -d bitzeny-${VERSION}-win
-	mv bitzeny-${VERSION}-win/*/bitzeny-*-setup.exe .
-	zip -r bitzeny-${VERSION}-win.zip bitzeny-${VERSION}-win
-	rm -rf bitzeny-${VERSION}-win
+	unzip okane-${VERSION}-win-gitian.zip -d bitzeny-${VERSION}-win
+	mv okane-${VERSION}-win/*/bitzeny-*-setup.exe .
+	zip -r okane-${VERSION}-win.zip bitzeny-${VERSION}-win
+	rm -rf okane-${VERSION}-win
 
 **Mac OS X .dmg:**
 
-	mv BitZeny-Qt.dmg bitzeny-${VERSION}-osx.dmg
+	mv Okane-Qt.dmg okane-${VERSION}-osx.dmg
 
 ###Next steps:
 
@@ -190,11 +190,11 @@ Commit your signature to gitian.sigs:
 
 SHA256SUMS
 ```
-88909c816f4fc9f5fc0d10b6706db0fa2a7e40029b587dea256324d09dfdf8d2  bitzeny-1.2.0-linux.tar.gz
-471d63dbedee9888a72969f032664b5f520a0f304f11e6e1bd9557463a0be88f  bitzeny-1.2.0-osx.dmg
-6305c3bf611c03fcb3d8dd75912ff18c95edeedb403a856f838357d0d2a9c249  bitzeny-1.2.0-win.zip
-19c561de87d1d4d554358d42ff5e0287a42b3396e4634336ba7f75470e1b9e44  bitzeny-1.2.0-win32-setup.exe
-61c60c186944c0a56830d426a984deecca6d78798655099419ba4a14837018ea  bitzeny-1.2.0-win64-setup.exe
+88909c816f4fc9f5fc0d10b6706db0fa2a7e40029b587dea256324d09dfdf8d2  okane-1.2.0-linux.tar.gz
+471d63dbedee9888a72969f032664b5f520a0f304f11e6e1bd9557463a0be88f  okane-1.2.0-osx.dmg
+6305c3bf611c03fcb3d8dd75912ff18c95edeedb403a856f838357d0d2a9c249  okane-1.2.0-win.zip
+19c561de87d1d4d554358d42ff5e0287a42b3396e4634336ba7f75470e1b9e44  okane-1.2.0-win32-setup.exe
+61c60c186944c0a56830d426a984deecca6d78798655099419ba4a14837018ea  okane-1.2.0-win64-setup.exe
 ```
 
 ```
@@ -206,13 +206,13 @@ SHA256SUMS.asc
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-88909c816f4fc9f5fc0d10b6706db0fa2a7e40029b587dea256324d09dfdf8d2  bitzeny-1.2.0-linux.tar.gz
-471d63dbedee9888a72969f032664b5f520a0f304f11e6e1bd9557463a0be88f  bitzeny-1.2.0-osx.dmg
-6305c3bf611c03fcb3d8dd75912ff18c95edeedb403a856f838357d0d2a9c249  bitzeny-1.2.0-win.zip
-19c561de87d1d4d554358d42ff5e0287a42b3396e4634336ba7f75470e1b9e44  bitzeny-1.2.0-win32-setup.exe
-61c60c186944c0a56830d426a984deecca6d78798655099419ba4a14837018ea  bitzeny-1.2.0-win64-setup.exe
+88909c816f4fc9f5fc0d10b6706db0fa2a7e40029b587dea256324d09dfdf8d2  okane-1.2.0-linux.tar.gz
+471d63dbedee9888a72969f032664b5f520a0f304f11e6e1bd9557463a0be88f  okane-1.2.0-osx.dmg
+6305c3bf611c03fcb3d8dd75912ff18c95edeedb403a856f838357d0d2a9c249  okane-1.2.0-win.zip
+19c561de87d1d4d554358d42ff5e0287a42b3396e4634336ba7f75470e1b9e44  okane-1.2.0-win32-setup.exe
+61c60c186944c0a56830d426a984deecca6d78798655099419ba4a14837018ea  okane-1.2.0-win64-setup.exe
 -----BEGIN PGP SIGNATURE-----
 ...
 ```
 
-- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the https://github.com/BitzenyCoreDevelopers/bitzeny/releases server
+- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the https://github.com/BitzenyCoreDevelopers/okane/releases server

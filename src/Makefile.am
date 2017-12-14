@@ -13,11 +13,11 @@ endif
 bin_PROGRAMS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += bitzenyd
+  bin_PROGRAMS += okaned
 endif
 
 if BUILD_BITCOIN_CLI
-  bin_PROGRAMS += bitzeny-cli
+  bin_PROGRAMS += okane-cli
 endif
 
 SUBDIRS = . $(BUILD_QT) $(BUILD_TEST)
@@ -160,37 +160,37 @@ nodist_libbitcoin_common_a_SOURCES = $(top_srcdir)/src/obj/build.h
 #
 
 # bitcoind binary #
-bitzenyd_LDADD = \
+okaned_LDADD = \
   libbitcoin_server.a \
   libbitcoin_cli.a \
   libbitcoin_common.a \
   $(LIBLEVELDB) \
   $(LIBMEMENV)
 if ENABLE_WALLET
-bitzenyd_LDADD += libbitcoin_wallet.a
+okaned_LDADD += libbitcoin_wallet.a
 endif
-bitzenyd_SOURCES = bitcoind.cpp
+okaned_SOURCES = bitcoind.cpp
 #
 
 if TARGET_WINDOWS
-bitzenyd_SOURCES += bitcoind-res.rc
+okaned_SOURCES += bitcoind-res.rc
 endif
 
 AM_CPPFLAGS += $(BDB_CPPFLAGS)
-bitzenyd_LDADD += $(BOOST_LIBS) $(BDB_LIBS)
+okaned_LDADD += $(BOOST_LIBS) $(BDB_LIBS)
 
 # bitcoin-cli binary #
-bitzeny_cli_LDADD = \
+okane_cli_LDADD = \
   libbitcoin_cli.a \
   libbitcoin_common.a \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
   $(BOOST_LIBS)
-bitzeny_cli_SOURCES = bitcoin-cli.cpp
+okane_cli_SOURCES = bitcoin-cli.cpp
 #
 
 if TARGET_WINDOWS
-bitzeny_cli_SOURCES += bitcoin-cli-res.rc
+okane_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
 # NOTE: This dependency is not strictly necessary, but without it make may try to build both in parallel, which breaks the LevelDB build system in a race

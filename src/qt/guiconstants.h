@@ -41,9 +41,9 @@ static const int MAX_PAYMENT_REQUEST_SIZE = 50000; // bytes
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 35
 
-#define QAPP_ORG_NAME "BitZeny"
-#define QAPP_ORG_DOMAIN "bitzeny.org"
-#define QAPP_APP_NAME_DEFAULT "BitZeny-Qt"
-#define QAPP_APP_NAME_TESTNET "BitZeny-Qt-testnet"
+#define QAPP_ORG_NAME "Okane"
+#define QAPP_ORG_DOMAIN "okane.org"
+#define QAPP_APP_NAME_DEFAULT "Okane-Qt"
+#define QAPP_APP_NAME_TESTNET "Okane-Qt-testnet"
 
 #endif // GUICONSTANTS_H
