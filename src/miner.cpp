@@ -427,14 +427,14 @@ CBlockTemplate* CreateNewBlockWithKey(CReserveKey& reservekey)
 
 bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 {
-    uint256 hash = pblock->GetHash();
+    uint256 hash = pblock->GetHashNoCache();
     uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
 
     if (hash > hashTarget)
         return false;
 
     //// debug print
-    LogPrintf("BitZenyMiner:\n");
+    LogPrintf("OkaneMiner:\n");
     LogPrintf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex(), hashTarget.GetHex());
     pblock->print();
     LogPrintf("generated %s\n", FormatMoney(pblock->vtx[0].vout[0].nValue));
@@ -443,7 +443,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     {
         LOCK(cs_main);
         if (pblock->hashPrevBlock != chainActive.Tip()->GetBlockHash())
-            return error("BitZenyMiner : generated block is stale");
+            return error("OkaneMiner : generated block is stale");
 
         // Remove key from key pool
         reservekey.KeepKey();
@@ -451,13 +451,13 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         // Track how many getdata requests this block gets
         {
             LOCK(wallet.cs_wallet);
-            wallet.mapRequestCount[pblock->GetHash()] = 0;
+            wallet.mapRequestCount[hash] = 0;
         }
 
         // Process this block the same as if we had received it from another node
         CValidationState state;
         if (!ProcessBlock(state, NULL, pblock))
-            return error("BitZenyMiner : ProcessBlock, block not accepted");
+            return error("OkaneMiner : ProcessBlock, block not accepted");
     }
 
     return true;
@@ -465,9 +465,9 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 
 void static BitcoinMiner(CWallet *pwallet)
 {
-    LogPrintf("BitZenyMiner started\n");
+    LogPrintf("OkaneMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("bitzeny-miner");
+    RenameThread("okane-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
@@ -493,7 +493,7 @@ void static BitcoinMiner(CWallet *pwallet)
         CBlock *pblock = &pblocktemplate->block;
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-        LogPrintf("Running BitZenyMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+        LogPrintf("Running OkaneMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
         //
@@ -523,7 +523,7 @@ void static BitcoinMiner(CWallet *pwallet)
             unsigned int nHashesDone = 0;
 
             for (; nHashesDone < 200; nHashesDone++) {
-                hash = pblock->GetHash();
+                hash = pblock->GetHashNoCache();
                 if (hash <= hashTarget) break;
                 pblock->nNonce++;
             }
@@ -565,7 +565,7 @@ void static BitcoinMiner(CWallet *pwallet)
                         if (GetTime() - nLogTime > 30 * 60)
                         {
                             nLogTime = GetTime();
-                            LogPrintf("hashmeter %6.0f khash/s\n", dHashesPerSec/1000.0);
+                            LogPrintf("hashmeter %6.3f khash/s\n", dHashesPerSec/1000.0);
                         }
                     }
                 }
@@ -595,7 +595,7 @@ void static BitcoinMiner(CWallet *pwallet)
     } }
     catch (boost::thread_interrupted)
     {
-        LogPrintf("BitZenyMiner terminated\n");
+        LogPrintf("OkaneMiner terminated\n");
         throw;
     }
 }

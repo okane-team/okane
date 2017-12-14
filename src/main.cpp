@@ -28,7 +28,7 @@ using namespace std;
 using namespace boost;
 
 #if defined(NDEBUG)
-# error "BitZeny cannot be compiled without assertions."
+# error "Okane cannot be compiled without assertions."
 #endif
 
 //
@@ -74,7 +74,7 @@ void EraseOrphansFor(NodeId peer);
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "BitZeny Signed Message:\n";
+const string strMessageMagic = "Okane Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -1711,7 +1711,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("bitzeny-scriptch");
+    RenameThread("okane-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -1728,7 +1728,7 @@ bool ConnectBlock(CBlock& block, CValidationState& state, CBlockIndex* pindex, C
 
     // Special case for the genesis block, skipping connection of its transactions
     // (its coinbase is unspendable)
-    if (block.GetHash() == Params().HashGenesisBlock()) {
+    if (block.GetHashNoCache() == Params().HashGenesisBlock()) {
         view.SetBestBlock(pindex->GetBlockHash());
         return true;
     }
