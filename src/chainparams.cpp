@@ -34,8 +34,8 @@ public:
         pchMessageStart[2] = 0xbe;
         pchMessageStart[3] = 0xf9;
         vAlertPubKey = ParseHex("049a3063c7aeb29a7114400bf0be0ddf4191b70730ecc93d3a99deb549d47f0e8b4a92e74cf92aa9c38d2870581fda3b34f039ddbcbf0db9aab290d2e59550093e");
-        nDefaultPort = 9253;
-        nRPCPort = 9252;
+        nDefaultPort = 9983;
+        nRPCPort = 9984;
         bnProofOfWorkLimit = CBigNum(~uint256(0) >> 18);
         nSubsidyHalvingInterval = 500000;
 
@@ -47,7 +47,7 @@ public:
         //     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)
         //     CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
         //   vMerkleTree: 4a5e1e
-        const char* pszTimestamp = "The Times 8/Nov/2014 BitZeny gahGae1k";
+        const char* pszTimestamp = "The Times 15/Nov/2017 Okane SKN";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -58,9 +58,9 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime    = 1415384723;
+        genesis.nTime    = 1513280269;
         genesis.nBits    = 0x1e3fffff;
-        genesis.nNonce   = 369858;
+        genesis.nNonce   = 101767;
 
         hashGenesisBlock = genesis.GetHash();
 #if 0
@@ -79,10 +79,10 @@ public:
             printf("genesis.nNonce %d\n", genesis.nNonce);
         }
 #endif
-        assert(hashGenesisBlock == uint256("0x000009f7e55e9e3b4781e22bd87a7cfa4acada9e4340d43ca738bf4e9fb8f5ce"));
-        assert(genesis.hashMerkleRoot == uint256("0xa626e591b4583a9cdfa3f8c7ffa90628c745dc01b411825544209fce3bdba4d2"));
+        assert(hashGenesisBlock == uint256("0x00002da50c8531d6dfed56acd6c1202d19de11287a60c1f2e9576120672ed956"));
+        assert(genesis.hashMerkleRoot == uint256("0xa1e4ba18c7db08a6be31a0b1994aa61656d83640cac22e8527dfa0dd3cc65a14"));
 
-        vSeeds.push_back(CDNSSeedData("bitzeny.org", "seed.bitzeny.org"));
+        vSeeds.push_back(CDNSSeedData("okane.org", "seed.okane.org"));
 
         base58Prefixes[PUBKEY_ADDRESS] = list_of(81);
         base58Prefixes[SCRIPT_ADDRESS] = list_of(5);
@@ -158,7 +158,8 @@ public:
 
         }
 #endif
-        assert(hashGenesisBlock == uint256("0x00003a0c79f595bddb7f37a22eb63fd23c541ab6a7dd7efd0215e7029bde225c"));
+	//printf("hashGenesisBlock %s\n", hashGenesisBlock.ToString().c_str());
+        assert(hashGenesisBlock == uint256("0x4683530501b30db0897f0df6730ce39bdcef83462fe2de4c9cd3c590bca15600"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -194,8 +195,8 @@ public:
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 18444;
         strDataDir = "regtest";
-        //printf("hashGenesisBlock %s\n", hashGenesisBlock.ToString().c_str());
-        assert(hashGenesisBlock == uint256("0x5f778410693e1fabe992d3a7097faf41c8c9365c4f238a50247e4670eb4b0c1c"));
+	//printf("hashGenesisBlock %s\n", hashGenesisBlock.ToString().c_str());
+        assert(hashGenesisBlock == uint256("0x6683cbc1addeade2ebb8736123ac8eaab95a0db55ba4061489bd875282883f69"));
 
         vSeeds.clear();  // Regtest mode doesn't have any DNS seeds.
     }
